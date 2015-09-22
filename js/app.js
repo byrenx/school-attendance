@@ -3,6 +3,18 @@
  * attendance record if one is not found
  * within localStorage.
  */
+
+
+$(function(){
+    var Attendance = {
+	
+	init: function(){
+	    if(!localStorage.attendance){
+		
+	    }
+	}
+    };
+});
 (function() {
     if (!localStorage.attendance) {
         console.log('Creating attendance records...');
