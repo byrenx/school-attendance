@@ -6,14 +6,87 @@
 
 
 $(function(){
-    var Attendance = {
-	
+
+    var Student = {
 	init: function(){
 	    if(!localStorage.attendance){
-		
+		localStorage.students = JSON.stringify([]);
 	    }
+	},
+	add: function(obj){
+	    var data = JSON.parse(localStorage.students);
+	    data.push(obj);
+	    localStorage.students = JSON.stringify(data);
+	}
+	list: function(){
+	    return Json.parse(localStorage.students);
 	}
     };
+
+
+    var Attendance = {
+	init: function(){
+	    if(!localStorage.attendance){
+		localStorage.attendance = JSON.stringify({});
+	    }
+	},
+	add: function(student, value){
+	    var data = JSON.parse(localStorage.attendance);
+	    data[student].push(value);
+	    localStorage.attendance = JSON.stringify(data);
+	},
+	get: function(student){
+	    var data = JSON.parse(localStorage.attendance);
+	    return data[student];
+	}
+	list: function(){
+	    return JSON.parse(localStorage.attendance);
+	}
+    };
+
+
+    var Octopus = {
+	students: [
+	    'Student A',
+	    'Student B',
+	    'Student C',
+	    'Student D',
+	],
+	n_days: 12, 
+	init: function(){
+	    this.initAttendance();
+	},
+	initAttendance: function(){
+	    for(var k=0; k < this.students.length; k++){
+		for(var i=0; i<this.n_days; i++){
+		    Attendance.add(this.students[k], this.getRandom());
+		}
+	    }
+	},
+	getRandom: function(){
+	    return Math.random() >= 0.5;
+	},
+	countMissing: function(student){
+	    var missing = 0;
+	    var data = Attendance.get(student);
+	    for(var i=0; i<data.length; i++){
+		if(data[i] == 0)
+		    missing++;
+	    }
+	    return missing;
+	},
+	renderAttendance: function(){
+	    view.render(Attendance.list());
+	}
+
+    };
+
+    var view = {
+	render: function(students){
+	    $('#attendance-table').html('');
+	    var content = '';
+	}
+    }
 });
 (function() {
     if (!localStorage.attendance) {
